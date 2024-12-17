@@ -3,9 +3,9 @@ package com.github.wohaopa.tc4helper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 
-import com.github.wohaopa.tc4helper.autoplay.AutoPlayButton;
+import cn.elytra.mod.tc4h.TCResearchHelperManager;
 
 public class Command extends CommandBase {
 
@@ -16,30 +16,47 @@ public class Command extends CommandBase {
 
     @Override
     public String getCommandName() {
-        return "TC4Helper";
+        return "tc4helper";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "TC4Helper Enable?";
+        return "/tc4helper <enable|disable|stop>";
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (sender instanceof EntityPlayer) {
-            if (args.length == 0) {
-                if (TC4Helper.enabled) {
-                    sender.addChatMessage(new ChatComponentText("TC4Helper is already disabled!"));
-                    TC4Helper.enabled = false;
-                } else {
-                    sender.addChatMessage(new ChatComponentText("TC4Helper is now enabled!"));
-                    TC4Helper.enabled = true;
+            if (args.length == 1) {
+                switch (args[0]) {
+                    case "enable" -> {
+                        TC4Helper.enabled = true;
+                        sender.addChatMessage(new ChatComponentTranslation("tc4helper.command.message.enable"));
+                    }
+                    case "disable" -> {
+                        TC4Helper.enabled = false;
+                        sender.addChatMessage(new ChatComponentTranslation("tc4helper.command.message.disable"));
+                    }
+                    case "stop" -> {
+                        TCResearchHelperManager.forceStop();
+                        sender.addChatMessage(new ChatComponentTranslation("tc4helper.command.message.stop"));
+                        TC4Helper.LOG.info("Forcibly stopping existing Research task");
+                    }
+                    default -> sendHelpMessage(sender);
                 }
+                return;
             }
-            if (args.length == 1 && args[0].equals("Restart")) {
-                AutoPlayButton.restart();
-            }
+
+            sendHelpMessage(sender);
         }
 
+    }
+
+    private static void sendHelpMessage(ICommandSender sender) {
+        sender.addChatMessage(new ChatComponentTranslation("tc4helper.command.help.0"));
+        sender.addChatMessage(new ChatComponentTranslation("tc4helper.command.help.1"));
+        sender.addChatMessage(new ChatComponentTranslation("tc4helper.command.help.2"));
+        sender.addChatMessage(new ChatComponentTranslation("tc4helper.command.help.3"));
+        sender.addChatMessage(new ChatComponentTranslation("tc4helper.command.help.4"));
     }
 }

@@ -1,5 +1,11 @@
-TC4Helper.Done=Done
-TC4Helper.Leisure=AutoPlay
-TC4Helper.Searching=Searching
-TC4Helper.CanExecute=CanExecute
-TC4Helper.Execute=Execute
+tc4helper.button.idle=HELP!
+tc4helper.button.running=Helping
+
+tc4helper.command.help.0=§g§lThaumcraft 4 Helper
+tc4helper.command.help.1=§7/tc4helper enable §f- Enable the TC4Helper Gui
+tc4helper.command.help.2=§7/tc4helper disable §f- Disable the TC4Helper Gui
+tc4helper.command.help.3=§7/tc4helper stop §f- Forcibly stop the ongoing research resolving task
+tc4helper.command.help.4=§fYou are going to use this command when encountering huge performance issues.
+tc4helper.command.message.enable=§aTC4Helper Enabled
+tc4helper.command.message.disable=§cTC4Helper Disabled
+tc4helper.command.message.stop=§aOngoing Research task is dropped!

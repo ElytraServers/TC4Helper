@@ -1,5 +1,11 @@
-TC4Helper.Done=完成
-TC4Helper.Leisure=AutoPlay
-TC4Helper.Searching=搜索中
-TC4Helper.CanExecute=可以执行
-TC4Helper.Execute=执行
+tc4helper.button.idle=救我！
+tc4helper.button.running=正在救
+
+tc4helper.command.help.0=§g§lThaumcraft 4 连线小帮手
+tc4helper.command.help.1=§7/tc4helper enable §f- 启用连线小帮手
+tc4helper.command.help.2=§7/tc4helper disable §f- 禁用连线小帮手
+tc4helper.command.help.3=§7/tc4helper stop §f- 强制终止正在进行的连线任务
+tc4helper.command.help.4=§f当你遇到强烈的性能问题时使用
+tc4helper.command.message.enable=§a连线小帮手启用
+tc4helper.command.message.disable=§c连线小帮手禁用
+tc4helper.command.message.stop=§a正在进行的连线任务已终止

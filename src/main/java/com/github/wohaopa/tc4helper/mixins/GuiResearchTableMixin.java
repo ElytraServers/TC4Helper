@@ -8,10 +8,11 @@ import net.minecraft.inventory.Container;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import com.github.wohaopa.tc4helper.autoplay.AutoPlayButton;
-import com.github.wohaopa.tc4helper.autoplay.GuiResearchTableHelperInterface;
-
+import cn.elytra.mod.tc4h.IGuiResearchTableHelper;
+import cn.elytra.mod.tc4h.TCResearchHelperManager;
+import cn.elytra.mod.tc4h.gui.HelperButton;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.client.gui.GuiResearchTable;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketAspectCombinationToServer;
@@ -21,7 +22,7 @@ import thaumcraft.common.lib.utils.HexUtils;
 import thaumcraft.common.tiles.TileResearchTable;
 
 @Mixin(value = GuiResearchTable.class, remap = false)
-public abstract class GuiResearchTableMixin extends GuiContainer implements GuiResearchTableHelperInterface {
+public abstract class GuiResearchTableMixin extends GuiContainer implements IGuiResearchTableHelper {
 
     private GuiResearchTableMixin(Container p_i1072_1_) {
         super(p_i1072_1_);
@@ -29,25 +30,31 @@ public abstract class GuiResearchTableMixin extends GuiContainer implements GuiR
 
     @Shadow
     EntityPlayer player;
+
     @Shadow
     public ResearchNoteData note;
+
     @Shadow
     private TileResearchTable tileEntity;
+
+    @Shadow
+    private AspectList aspectlist;
 
     @Override
     public void initGui() {
         super.initGui();
-        this.buttonList.add(new AutoPlayButton(101, width / 2 - 25, 20, 50, 20));
+        this.buttonList.add(new HelperButton(101, width / 2 - 25, 20, 50, 20));
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if (button instanceof AutoPlayButton autoPlayButton) {
-            autoPlayButton.onAction(player, note, this);
+        if (button instanceof HelperButton) {
+            TCResearchHelperManager.execute(this);
         }
     }
 
-    public void place(HexUtils.Hex hex, Aspect aspect) {
+    @Override
+    public void tc4h$placeAspect(HexUtils.Hex hex, Aspect aspect) {
         PacketHandler.INSTANCE.sendToServer(
             new PacketAspectPlaceToServer(
                 this.player,
@@ -59,7 +66,8 @@ public abstract class GuiResearchTableMixin extends GuiContainer implements GuiR
                 aspect));
     }
 
-    public void combine(Aspect aspect1, Aspect aspect2) {
+    @Override
+    public void tc4h$combineAspect(Aspect aspect1, Aspect aspect2) {
         PacketHandler.INSTANCE.sendToServer(
             new PacketAspectCombinationToServer(
                 this.player,
@@ -73,4 +81,18 @@ public abstract class GuiResearchTableMixin extends GuiContainer implements GuiR
                 true));
     }
 
+    @Override
+    public ResearchNoteData tc4h$getResearchNoteData() {
+        return note;
+    }
+
+    @Override
+    public EntityPlayer tc4h$getPlayer() {
+        return player;
+    }
+
+    @Override
+    public AspectList tc4h$getAspectList() {
+        return aspectlist;
+    }
 }
